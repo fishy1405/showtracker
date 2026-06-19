@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fishy & Kirby — Show Tracker</title>
+<title>Kirby & Fishy's Show Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Josefin+Sans:wght@300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -11,7 +11,7 @@
   --bg:#171412;--bg2:#211d1a;--bg3:#2a2420;--bg4:#342e29;
   --terra:#c2694a;--terra2:#e0a98e;
   --cream:#f5ede8;--cream2:#e8d8d0;
-  --muted:#8a7b74;--muted2:#b09a92;--white:#ffffff;
+  --muted:#8a7b74;--muted2:#b8a89e;--white:#ffffff;
   --genre-drama:#a78bfa;--genre-comedy:#fbbf24;--genre-crime:#f87171;
   --genre-scifi:#60a5fa;--genre-animation:#34d399;--genre-western:#fb923c;
   --genre-reality:#a3e635;--genre-horror:#e879f9;
@@ -21,7 +21,7 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--cream);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.35;pointer-events:none;z-index:0}
-.app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px 80px}
+.app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 24px 80px}
 
 .toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:0.5px solid var(--bg4);border-radius:10px;padding:12px 18px;font-size:13px;color:var(--cream2);z-index:999;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;pointer-events:none}
 .toast.show{opacity:1;transform:translateY(0)}
@@ -36,21 +36,25 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .loading-dots span:nth-child(3){animation-delay:.4s}
 @keyframes dot{from{opacity:.2;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
 
+/* HEADER */
 .header{padding:56px 0 40px;text-align:center}
 .header-eyebrow{font-family:var(--josefin);font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra);font-weight:300;margin-bottom:14px}
-.header-title{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,6vw,4rem);font-weight:400;line-height:1.1;color:var(--white);margin-bottom:8px}
-.header-title span{color:var(--terra2);font-style:italic}
-.header-sub{font-family:var(--josefin);font-size:13px;letter-spacing:0.08em;color:var(--muted2);margin-bottom:32px;font-weight:300}
+.header-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;line-height:1.15;color:var(--white);margin-bottom:10px}
+.header-title em{color:var(--terra2);font-style:italic}
+.header-sub{font-family:var(--josefin);font-size:13px;letter-spacing:0.1em;color:#c8b8b0;margin-bottom:32px;font-weight:400}
 .header-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--terra),transparent);margin:0 auto}
 
-.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:36px 0}
-.hstat{background:var(--bg2);border:0.5px solid var(--bg4);border-radius:14px;padding:20px 18px;text-align:center;transition:border-color .2s}
+/* HERO STATS — now 6 cards */
+.hero-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:36px 0}
+@media(max-width:900px){.hero-stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.hero-stats{grid-template-columns:repeat(2,1fr)}}
+.hstat{background:var(--bg2);border:0.5px solid var(--bg4);border-radius:14px;padding:18px 14px;text-align:center;transition:border-color .2s}
 .hstat:hover{border-color:var(--terra)}
-.hstat-val{font-family:'Inter',sans-serif;font-size:2rem;font-weight:400;color:var(--terra2);line-height:1}
-.hstat-lbl{font-family:var(--josefin);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:7px;font-weight:300}
-.hstat-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.hstat-val{font-family:'Inter',sans-serif;font-size:1.7rem;font-weight:400;color:var(--terra2);line-height:1}
+.hstat-lbl{font-family:var(--josefin);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#a89890;margin-top:7px;font-weight:400}
+.hstat-sub{font-size:11px;color:#a89890;margin-top:3px}
 
-/* COLLAPSIBLE SECTION HEAD */
+/* COLLAPSIBLE SECTION */
 .section-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
 .section-head-btn{display:flex;align-items:center;gap:12px;background:none;border:none;cursor:pointer;padding:0;text-align:left}
 .section-head-btn:focus{outline:none}
@@ -68,7 +72,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .form-card{background:var(--bg2);border:0.5px solid var(--bg4);border-radius:14px;padding:24px}
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
 .form-group{display:flex;flex-direction:column;gap:5px}
-.form-label{font-family:var(--josefin);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);font-weight:300}
+.form-label{font-family:var(--josefin);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);font-weight:300}
 .form-input,.form-select,.form-textarea{background:var(--bg3);border:0.5px solid var(--bg4);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--cream);font-family:'Inter',sans-serif;transition:border-color .15s;outline:none;width:100%}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--terra)}
 .form-select option{background:var(--bg3);color:var(--cream)}
@@ -89,12 +93,14 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* CURRENTLY WATCHING */
 .watching-section{margin:48px 0}
 .watching-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.watching-card{background:var(--bg2);border:0.5px solid rgba(224,169,142,0.2);border-radius:12px;padding:16px 18px;position:relative;transition:transform .2s,border-color .2s}
-.watching-card:hover{transform:translateY(-2px);border-color:rgba(224,169,142,0.4)}
+.watching-card{background:var(--bg2);border:0.5px solid rgba(224,169,142,0.2);border-radius:12px;padding:16px 18px;position:relative;transition:transform .2s,border-color .2s;cursor:pointer}
+.watching-card:hover{transform:translateY(-2px);border-color:rgba(224,169,142,0.5)}
 .watching-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--terra),transparent);border-radius:2px 2px 0 0}
-.watching-show-title{font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--white);line-height:1.3;margin-bottom:6px}
-.watching-meta{font-family:var(--josefin);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);font-weight:300;margin-bottom:8px}
+.watching-show-title{font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--white);line-height:1.3;margin-bottom:5px}
+.watching-meta{font-family:var(--josefin);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);font-weight:300;margin-bottom:8px}
+.watching-tags{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
 .watching-genre{display:inline-block;font-size:10px;font-weight:400;padding:2px 8px;border-radius:99px;font-family:'Inter',sans-serif}
+.watching-network{display:inline-block;font-size:10px;font-weight:400;padding:2px 8px;border-radius:99px;font-family:var(--josefin);letter-spacing:0.06em;background:rgba(255,255,255,0.06);color:var(--muted2)}
 .watching-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--terra2);margin-right:6px;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
@@ -133,17 +139,24 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .hof-memory:focus{border-bottom-color:var(--terra)}
 .hof-memory::placeholder{color:var(--bg4);font-style:normal}
 
-/* CHARTS */
-.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:48px 0}
-@media(max-width:640px){.charts-row{grid-template-columns:1fr}}
+/* CHARTS — now 3 columns */
+.charts-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin:48px 0}
+@media(max-width:800px){.charts-row{grid-template-columns:1fr}}
 .chart-card{background:var(--bg2);border:0.5px solid var(--bg4);border-radius:14px;padding:24px}
 .chart-title{font-family:var(--josefin);font-size:0.85rem;font-weight:300;letter-spacing:0.16em;text-transform:uppercase;color:var(--white);margin-bottom:20px}
 .genre-bars{display:flex;flex-direction:column;gap:10px}
 .genre-row-chart{display:flex;align-items:center;gap:10px}
-.genre-label{font-family:'Inter',sans-serif;font-size:12px;color:var(--muted2);width:130px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.genre-label{font-family:'Inter',sans-serif;font-size:11px;color:var(--muted2);width:115px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .genre-bar-wrap{flex:1;height:7px;background:var(--bg3);border-radius:99px;overflow:hidden}
 .genre-bar{height:100%;border-radius:99px;transition:width .8s cubic-bezier(0.23,1,0.32,1)}
-.genre-count{font-size:12px;color:var(--muted);width:38px;text-align:right;flex-shrink:0;font-family:'Inter',sans-serif}
+.genre-count{font-size:11px;color:var(--muted);width:28px;text-align:right;flex-shrink:0;font-family:'Inter',sans-serif}
+/* donut */
+.donut-container{display:flex;flex-direction:column;align-items:center;gap:16px}
+.donut-legend{display:flex;flex-direction:column;gap:6px;width:100%}
+.legend-row{display:flex;align-items:center;gap:8px}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.legend-label{font-size:11px;color:var(--muted2);font-family:'Inter',sans-serif;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.legend-val{font-size:11px;color:var(--muted);font-family:'Inter',sans-serif}
 
 /* SHOW LIST */
 .show-list-section{margin:48px 0}
@@ -152,23 +165,31 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .ctrl:focus{outline:none}
 .ctrl:hover,.ctrl:focus{border-color:var(--terra);color:var(--cream)}
 input.ctrl::placeholder{color:var(--muted)}
+.show-header-row{display:grid;grid-template-columns:1fr 100px 160px 120px 70px 130px 50px;gap:12px;padding:6px 16px 8px;margin-bottom:2px}
+.sh-col{font-family:var(--josefin);font-size:10px;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
 .show-grid{display:flex;flex-direction:column;gap:4px}
-.show-row{display:grid;grid-template-columns:1fr 110px 120px 90px 120px 60px;gap:10px;align-items:start;padding:13px 16px;background:var(--bg2);border-radius:10px;transition:background .15s}
+.show-row{display:grid;grid-template-columns:1fr 100px 160px 120px 70px 130px 50px;gap:12px;align-items:start;padding:13px 16px;background:var(--bg2);border-radius:10px;transition:background .15s}
 .show-row:hover{background:var(--bg3)}
 .show-title{font-weight:400;color:var(--white);font-size:14px;line-height:1.3;font-family:'Inter',sans-serif}
-.show-note-small{font-family:var(--josefin);font-size:10px;letter-spacing:0.06em;color:var(--muted);margin-top:3px;line-height:1.5;font-weight:300}
+.show-note-small{font-family:var(--josefin);font-size:10px;letter-spacing:0.06em;color:#a89890;margin-top:3px;line-height:1.5;font-weight:300}
 .show-status{font-family:var(--josefin);font-size:10px;font-weight:300;letter-spacing:0.06em;text-transform:uppercase;padding:3px 9px;border-radius:99px;display:inline-block;white-space:nowrap}
 .s-watched{background:rgba(52,211,153,0.12);color:#34d399}
 .s-watching{background:rgba(224,169,142,0.15);color:var(--terra2)}
 .s-partial{background:rgba(96,165,250,0.12);color:#60a5fa}
 .show-genre-tag{font-family:var(--josefin);font-size:10px;font-weight:300;letter-spacing:0.05em;text-transform:uppercase;padding:3px 9px;border-radius:99px;display:inline-block;white-space:nowrap}
+.show-network-tag{font-family:var(--josefin);font-size:10px;font-weight:300;letter-spacing:0.05em;text-transform:uppercase;padding:3px 9px;border-radius:99px;display:inline-block;white-space:nowrap;background:rgba(255,255,255,0.06);color:var(--muted2)}
+.show-seasons{font-size:11px;color:var(--muted2);font-family:'Inter',sans-serif;font-weight:300;white-space:nowrap}
 .show-hrs{font-size:12px;color:var(--muted2);text-align:right;font-family:'Inter',sans-serif;font-weight:300}
+.memory-wrap{position:relative;display:flex;align-items:center;gap:5px}
+.memory-wrap .memory-pencil{font-size:12px;color:var(--bg4);display:inline-block;transform:scaleX(-1);flex-shrink:0;transition:color .15s;line-height:1;margin-top:1px}
+.show-row:hover .memory-pencil{color:var(--muted)}
 .show-memory-input{font-size:12px;background:transparent;border:none;border-bottom:0.5px solid transparent;color:var(--muted);font-family:'Inter',sans-serif;font-style:italic;width:100%;padding:2px 0;transition:border-color .15s;outline:none}
 .show-memory-input:focus{border-bottom-color:var(--terra);color:var(--cream2)}
 .show-memory-input::placeholder{color:var(--bg4);font-style:normal}
 .show-row:hover .show-memory-input::placeholder{color:var(--muted)}
+.show-memory-input:focus ~ .memory-pencil,.memory-wrap:focus-within .memory-pencil{color:var(--terra)}
 .show-actions{display:flex;gap:6px;align-items:center;justify-content:flex-end}
-.icon-btn{background:transparent;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;font-size:14px;transition:color .15s;line-height:1}
+.icon-btn{background:transparent;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;font-size:14px;transition:color .15s;line-height:1;display:inline-block;transform:scaleX(-1)}
 .icon-btn:hover.edit{color:var(--terra2)}
 .count-note{font-family:var(--josefin);font-size:11px;letter-spacing:0.06em;color:var(--muted);margin-top:12px;text-align:center;font-weight:300}
 .empty-state{text-align:center;padding:40px;color:var(--muted);font-size:14px}
@@ -180,7 +201,7 @@ input.ctrl::placeholder{color:var(--muted)}
 .star-select span:hover ~ span{color:var(--bg4) !important}
 
 .footer{text-align:center;padding:40px 0 20px;border-top:0.5px solid var(--bg3);margin-top:60px}
-.footer-text{font-family:var(--josefin);font-size:12px;letter-spacing:0.1em;color:var(--muted);font-weight:300}
+.footer-text{font-family:var(--josefin);font-size:12px;letter-spacing:0.1em;color:#a89890;font-weight:400}
 .footer-text span{color:var(--terra2)}
 
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -191,7 +212,7 @@ input.ctrl::placeholder{color:var(--muted)}
 
 @media(max-width:700px){
   .show-row{grid-template-columns:1fr 90px 50px}
-  .show-row .show-genre-tag,.show-row .show-hrs,.show-row .show-memory-input{display:none}
+  .show-row .show-genre-tag,.show-row .show-network-tag,.show-row .show-seasons,.show-row .show-hrs,.show-row .show-memory-input{display:none}.show-header-row .sh-col:nth-child(n+3){display:none}
   .hero-stats{grid-template-columns:repeat(2,1fr)}
 }
 </style>
@@ -199,7 +220,7 @@ input.ctrl::placeholder{color:var(--muted)}
 <body>
 
 <div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-title">Fishy & Kirby</div>
+  <div class="loading-title">Kirby & Fishy</div>
   <div class="loading-dots"><span></span><span></span><span></span></div>
 </div>
 
@@ -229,8 +250,8 @@ input.ctrl::placeholder{color:var(--muted)}
 
 <header class="header">
   <p class="header-eyebrow">Manila × Singapore</p>
-  <h1 class="header-title">Fishy <span>&</span> Kirby</h1>
-  <p class="header-sub">Every show. Every night together.</p>
+  <h1 class="header-title">Kirby &amp; Fishy's <em>Show Tracker</em></h1>
+  <p class="header-sub">(almost) every episode, (almost) every night</p>
   <div class="header-divider"></div>
 </header>
 
@@ -239,6 +260,8 @@ input.ctrl::placeholder{color:var(--muted)}
   <div class="hstat"><div class="hstat-val">—</div><div class="hstat-lbl">Hours watched</div></div>
   <div class="hstat"><div class="hstat-val">—</div><div class="hstat-lbl">Avg rating</div></div>
   <div class="hstat"><div class="hstat-val">—</div><div class="hstat-lbl">Watching now</div></div>
+  <div class="hstat"><div class="hstat-val">—</div><div class="hstat-lbl">Seasons watched</div></div>
+  <div class="hstat"><div class="hstat-val">—</div><div class="hstat-lbl">Episodes watched</div></div>
 </div>
 
 <!-- ADD SHOW -->
@@ -266,12 +289,24 @@ input.ctrl::placeholder{color:var(--muted)}
           <label class="form-label">Status</label>
           <select class="form-select" id="addStatus">
             <option value="">Select…</option>
-            <option>Currently watching</option><option>On Hold</option><option>Watched</option>
+            <option>Watched</option><option>Currently watching</option><option>On Hold</option>
           </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Network</label>
+          <input class="form-input" id="addNetwork" placeholder="e.g. HBO, Netflix…">
         </div>
         <div class="form-group">
           <label class="form-label">Seasons together</label>
           <input class="form-input" id="addTogether" placeholder="e.g. All seasons / S1–3">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Seasons watched</label>
+          <input class="form-input" id="addSeasonsWatched" type="number" min="0" placeholder="e.g. 2">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total seasons</label>
+          <input class="form-input" id="addSeasonsTotal" type="number" min="0" placeholder="e.g. 4">
         </div>
         <div class="form-group">
           <label class="form-label">Episodes watched</label>
@@ -364,6 +399,13 @@ input.ctrl::placeholder{color:var(--muted)}
     <h3 class="chart-title">Hours by genre</h3>
     <div class="genre-bars" id="hoursBars"></div>
   </div>
+  <div class="chart-card">
+    <h3 class="chart-title">Shows by platform</h3>
+    <div class="donut-container">
+      <canvas id="donutCanvas" width="160" height="160"></canvas>
+      <div class="donut-legend" id="donutLegend"></div>
+    </div>
+  </div>
 </div>
 
 <!-- SHOW LIST -->
@@ -376,7 +418,7 @@ input.ctrl::placeholder{color:var(--muted)}
     <input type="text" class="ctrl" id="search" placeholder="Search…" oninput="renderList()">
     <select class="ctrl" id="statusFilter" onchange="renderList()">
       <option value="">All statuses</option>
-      <option>Currently watching</option><option>On Hold</option><option>Watched</option>
+      <option>Watched</option><option>Currently watching</option><option>On Hold</option>
     </select>
     <select class="ctrl" id="genreFilter" onchange="renderList()">
       <option value="">All genres</option>
@@ -384,18 +426,30 @@ input.ctrl::placeholder{color:var(--muted)}
       <option>Drama</option><option>Horror / dark</option><option>Reality / docuseries</option>
       <option>Sci-fi / fantasy</option><option>Western</option>
     </select>
+    <select class="ctrl" id="platformFilter" onchange="renderList()">
+      <option value="">All platforms</option>
+    </select>
     <select class="ctrl" id="sortSel" onchange="renderList()">
       <option value="title">A – Z</option>
       <option value="hrs">Most hours</option>
       <option value="rating">Top rated</option>
     </select>
   </div>
+  <div class="show-header-row">
+    <div class="sh-col">Show</div>
+    <div class="sh-col">Status</div>
+    <div class="sh-col">Genre</div>
+    <div class="sh-col">Platform</div>
+    <div class="sh-col">Seasons</div>
+    <div class="sh-col">Memory</div>
+    <div class="sh-col"></div>
+  </div>
   <div class="show-grid" id="showGrid"></div>
   <p class="count-note" id="countNote"></p>
 </section>
 
 <footer class="footer">
-  <p class="footer-text">Together since <span>October 9, 2022</span> · Watching across the miles 🌏</p>
+  <p class="footer-text">watching together, miles apart since <span>October 9, 2022</span> 🌏</p>
 </footer>
 </div>
 
@@ -406,6 +460,28 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const GENRE_COLORS={"Drama":"#a78bfa","Comedy":"#fbbf24","Crime / thriller":"#f87171","Sci-fi / fantasy":"#60a5fa","Animation":"#34d399","Western":"#fb923c","Reality / docuseries":"#a3e635","Horror / dark":"#e879f9"};
 const GENRE_BG={"Drama":"rgba(167,139,250,0.15)","Comedy":"rgba(251,191,36,0.15)","Crime / thriller":"rgba(248,113,113,0.15)","Sci-fi / fantasy":"rgba(96,165,250,0.15)","Animation":"rgba(52,211,153,0.15)","Western":"rgba(251,146,60,0.15)","Reality / docuseries":"rgba(163,230,53,0.15)","Horror / dark":"rgba(232,121,249,0.15)"};
+const NETWORK_COLORS=["#e0a98e","#a78bfa","#60a5fa","#34d399","#fbbf24","#f87171","#fb923c","#e879f9","#a3e635","#38bdf8","#f472b6","#4ade80"];
+const PLATFORM_COLORS={
+  "Apple TV+":  {bg:"rgba(255,255,255,0.10)", color:"#d4d4d4"},
+  "HBO Max":    {bg:"rgba(99,102,241,0.18)",  color:"#a5b4fc"},
+  "Netflix":    {bg:"rgba(229,57,53,0.18)",   color:"#fca5a5"},
+  "Prime":      {bg:"rgba(0,168,225,0.18)",   color:"#7dd3fc"},
+  "Paramount+": {bg:"rgba(30,136,229,0.18)",  color:"#93c5fd"},
+  "Disney+":    {bg:"rgba(17,24,245,0.18)",   color:"#a5b4fc"},
+  "Peacock":    {bg:"rgba(251,191,36,0.18)",  color:"#fde68a"},
+  "Starz":      {bg:"rgba(248,113,113,0.18)", color:"#fca5a5"},
+  "Adult Swim": {bg:"rgba(52,211,153,0.18)",  color:"#6ee7b7"},
+};
+function platformTag(n){
+  if(!n||n==='—') return '<span class="show-network-tag">—</span>';
+  const p=PLATFORM_COLORS[n]||{bg:"rgba(255,255,255,0.07)",color:"#b0a098"};
+  return `<span class="show-network-tag" style="background:${p.bg};color:${p.color}">${n}</span>`;
+}
+function watchingPlatformTag(n){
+  if(!n) return '';
+  const p=PLATFORM_COLORS[n]||{bg:"rgba(255,255,255,0.07)",color:"#b0a098"};
+  return `<span class="watching-network" style="background:${p.bg};color:${p.color}">${n}</span>`;
+}
 
 const upcoming=[
   {title:"House of the Dragon",season:"Season 3",date:"June 2026",status:"soon",genre:"Sci-fi / fantasy",note:"HBO"},
@@ -418,7 +494,7 @@ const upcoming=[
   {title:"Invincible",season:"Season 5",date:"2027",status:"tbd",genre:"Animation",note:"Amazon"},
   {title:"Shrinking",season:"Season 4",date:"TBD",status:"tbd",genre:"Comedy",note:"Apple TV+"},
   {title:"Severance",season:"Season 3",date:"TBD",status:"tbd",genre:"Sci-fi / fantasy",note:"Apple TV+"},
-  {title:"Slow Horses",season:"Season 6",date:"TBD",status:"tbd",genre:"Crime / thriller",note:"Apple TV+ · S7 also confirmed"},
+  {title:"Slow Horses",season:"Season 6",date:"TBD",status:"tbd",genre:"Crime / thriller",note:"Apple TV+"},
   {title:"The Last of Us",season:"Season 3",date:"TBD",status:"tbd",genre:"Horror / dark",note:"HBO"},
   {title:"Hacks",season:"Season 5",date:"TBD",status:"tbd",genre:"Comedy",note:"Final season · HBO"},
   {title:"Fallout",season:"Season 3",date:"TBD",status:"tbd",genre:"Sci-fi / fantasy",note:"Amazon"},
@@ -439,90 +515,90 @@ const upcoming=[
 ];
 
 const SEED=[
-  {title:"1883",genre:"Western",status:"Watched",together:"All seasons",eps:10,avg_mins:55,rating:4,note:"Yellowstone prequel",memory:""},
-  {title:"1923",genre:"Western",status:"Watched",together:"All seasons",eps:16,avg_mins:55,rating:4,note:"Yellowstone prequel",memory:""},
-  {title:"Adventure Time",genre:"Animation",status:"Watched",together:"S3–10",eps:208,avg_mins:12,rating:5,note:"S1–2 before together",memory:""},
-  {title:"Arcane",genre:"Animation",status:"Watched",together:"All seasons",eps:18,avg_mins:40,rating:5,note:"Concluded after S2",memory:""},
-  {title:"Beef",genre:"Drama",status:"Currently watching",together:"All seasons",eps:10,avg_mins:30,rating:0,note:"",memory:""},
-  {title:"Big Little Lies",genre:"Drama",status:"Watched",together:"All seasons",eps:14,avg_mins:60,rating:4,note:"",memory:""},
-  {title:"Brothers Sun",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:50,rating:3,note:"Cancelled after S1",memory:""},
-  {title:"Chief of War",genre:"Drama",status:"Watched",together:"All seasons",eps:8,avg_mins:55,rating:3,note:"S2 renewed",memory:""},
-  {title:"Clarkson's Farm",genre:"Reality / docuseries",status:"Watched",together:"All seasons",eps:24,avg_mins:50,rating:4,note:"S5 in production",memory:""},
-  {title:"Common Side Effects",genre:"Comedy",status:"Currently watching",together:"S1",eps:7,avg_mins:30,rating:0,note:"",memory:""},
-  {title:"Court of Gold",genre:"Drama",status:"Watched",together:"All seasons",eps:6,avg_mins:50,rating:3,note:"",memory:""},
-  {title:"The Boys",genre:"Sci-fi / fantasy",status:"Watched",together:"S4–5",eps:16,avg_mins:55,rating:4,note:"S1–3 before together; concluded",memory:""},
-  {title:"The Chair",genre:"Comedy",status:"Watched",together:"All seasons",eps:6,avg_mins:30,rating:3,note:"Cancelled after S1",memory:""},
-  {title:"The Curse",genre:"Horror / dark",status:"Watched",together:"All seasons",eps:10,avg_mins:55,rating:4,note:"Limited series",memory:""},
-  {title:"Dark Matter",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:9,avg_mins:50,rating:4,note:"S2 renewed",memory:""},
-  {title:"Dark Winds",genre:"Crime / thriller",status:"On Hold",together:"—",eps:0,avg_mins:50,rating:0,note:"Haven't finished S1",memory:""},
-  {title:"Disenchanted",genre:"Animation",status:"Watched",together:"All seasons",eps:20,avg_mins:22,rating:3,note:"",memory:""},
-  {title:"Drops of God",genre:"Drama",status:"Watched",together:"All seasons",eps:8,avg_mins:45,rating:4,note:"S2–3 renewed",memory:""},
-  {title:"Duster",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:10,avg_mins:45,rating:3,note:"",memory:""},
-  {title:"Dutton Ranch",genre:"Western",status:"Currently watching",together:"S1",eps:6,avg_mins:50,rating:0,note:"Ongoing",memory:""},
-  {title:"East Bound & Down",genre:"Comedy",status:"Watched",together:"All seasons",eps:29,avg_mins:30,rating:4,note:"Concluded",memory:""},
-  {title:"Fallout",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:16,avg_mins:55,rating:5,note:"S3 in development",memory:""},
-  {title:"Gen V",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:15,avg_mins:55,rating:3,note:"Cancelled after S2",memory:""},
-  {title:"Gravity Falls",genre:"Animation",status:"Watched",together:"All seasons",eps:40,avg_mins:22,rating:4,note:"Concluded",memory:""},
-  {title:"Hacks",genre:"Comedy",status:"Currently watching",together:"S1–4",eps:30,avg_mins:35,rating:5,note:"S5 incoming — final season",memory:""},
-  {title:"Hijack",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:7,avg_mins:45,rating:4,note:"S2–3 renewed",memory:""},
-  {title:"House of the Dragon",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:18,avg_mins:60,rating:3,note:"S3 June 2026",memory:""},
-  {title:"House of Guinness",genre:"Drama",status:"Watched",together:"All seasons",eps:6,avg_mins:55,rating:3,note:"",memory:""},
-  {title:"Invincible",genre:"Animation",status:"Watched",together:"S1–4",eps:32,avg_mins:45,rating:5,note:"S5 announced 2027",memory:""},
-  {title:"It's Always Sunny (S18)",genre:"Comedy",status:"Watched",together:"S18",eps:8,avg_mins:22,rating:4,note:"S1–17 before together",memory:""},
-  {title:"Jury Duty",genre:"Reality / docuseries",status:"Watched",together:"All seasons",eps:8,avg_mins:35,rating:5,note:"",memory:""},
-  {title:"Jury Duty: Company Retreat",genre:"Reality / docuseries",status:"Currently watching",together:"S1",eps:6,avg_mins:35,rating:0,note:"",memory:""},
-  {title:"Landman S1",genre:"Drama",status:"Watched",together:"All seasons",eps:10,avg_mins:55,rating:3,note:"",memory:""},
-  {title:"Landman S2",genre:"Drama",status:"Currently watching",together:"S2",eps:5,avg_mins:55,rating:0,note:"Mid-season",memory:""},
-  {title:"The Last of Us",genre:"Horror / dark",status:"Watched",together:"All seasons",eps:16,avg_mins:55,rating:5,note:"S3 confirmed",memory:""},
-  {title:"Legends",genre:"Comedy",status:"Currently watching",together:"S1",eps:6,avg_mins:30,rating:0,note:"",memory:""},
-  {title:"Legends of Vox Machina",genre:"Animation",status:"Watched",together:"All seasons",eps:27,avg_mins:24,rating:4,note:"",memory:""},
-  {title:"Mobland",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:55,rating:3,note:"",memory:""},
-  {title:"The Mighty Nein",genre:"Animation",status:"Watched",together:"All seasons",eps:3,avg_mins:24,rating:4,note:"Critical Role animated",memory:""},
-  {title:"Mare of Easttown",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:7,avg_mins:60,rating:5,note:"Limited series",memory:""},
-  {title:"Murderbot",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:10,avg_mins:40,rating:4,note:"S2 renewed",memory:""},
-  {title:"Murder at the End of the World",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:7,avg_mins:55,rating:4,note:"Limited series",memory:""},
-  {title:"Mythic Quest",genre:"Comedy",status:"Watched",together:"All seasons",eps:36,avg_mins:28,rating:4,note:"",memory:""},
-  {title:"Only Murders in the Building",genre:"Crime / thriller",status:"Watched",together:"S1–3",eps:30,avg_mins:35,rating:4,note:"S4–5 aired; S6 renewed",memory:""},
-  {title:"Outer Range",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:16,avg_mins:50,rating:3,note:"",memory:""},
-  {title:"Party Down",genre:"Comedy",status:"Watched",together:"All seasons",eps:30,avg_mins:28,rating:4,note:"",memory:""},
-  {title:"Peacemaker",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:14,avg_mins:45,rating:4,note:"Concluded S2",memory:""},
-  {title:"The Penguin",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:55,rating:4,note:"",memory:""},
-  {title:"Percy Jackson",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:16,avg_mins:40,rating:3,note:"S3 in development",memory:""},
-  {title:"The Pitt",genre:"Drama",status:"Watched",together:"All seasons",eps:15,avg_mins:60,rating:4,note:"S2–3 renewed",memory:""},
-  {title:"Pluribus",genre:"Sci-fi / fantasy",status:"Currently watching",together:"S1",eps:6,avg_mins:40,rating:0,note:"",memory:""},
-  {title:"Poker Face",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:10,avg_mins:50,rating:4,note:"S2 confirmed",memory:""},
-  {title:"Red Oaks",genre:"Comedy",status:"Watched",together:"All seasons",eps:30,avg_mins:28,rating:4,note:"Concluded",memory:""},
-  {title:"The Rehearsal",genre:"Reality / docuseries",status:"Watched",together:"All seasons",eps:12,avg_mins:60,rating:5,note:"",memory:""},
-  {title:"The Residence",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:45,rating:3,note:"",memory:""},
-  {title:"Rick and Morty",genre:"Animation",status:"Watched",together:"S7–8",eps:20,avg_mins:22,rating:4,note:"S1–6 before together",memory:""},
-  {title:"Righteous Gemstones",genre:"Comedy",status:"Watched",together:"All seasons",eps:34,avg_mins:55,rating:4,note:"",memory:""},
-  {title:"Rings of Power",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:16,avg_mins:60,rating:3,note:"S3 filming",memory:""},
-  {title:"The Resort",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:40,rating:4,note:"Limited series",memory:""},
-  {title:"Severance",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:19,avg_mins:50,rating:5,note:"S3 renewed",memory:""},
-  {title:"Seven Dials Mystery",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:3,avg_mins:55,rating:3,note:"Agatha Christie",memory:""},
-  {title:"Sharp Objects",genre:"Horror / dark",status:"Watched",together:"All seasons",eps:8,avg_mins:55,rating:4,note:"Limited series",memory:""},
-  {title:"Shogun",genre:"Drama",status:"Watched",together:"All seasons",eps:10,avg_mins:60,rating:5,note:"S2 filming",memory:""},
-  {title:"Shrinking",genre:"Comedy",status:"Watched",together:"All seasons",eps:30,avg_mins:30,rating:4,note:"S4 renewed",memory:""},
-  {title:"Side Quest",genre:"Comedy",status:"Currently watching",together:"S1",eps:6,avg_mins:30,rating:0,note:"",memory:""},
-  {title:"Silo",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:20,avg_mins:50,rating:4,note:"S3 July 3 2026",memory:""},
-  {title:"Slow Horses",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:30,avg_mins:45,rating:5,note:"S6–7 confirmed",memory:""},
-  {title:"Steal",genre:"Crime / thriller",status:"Currently watching",together:"S1",eps:6,avg_mins:45,rating:0,note:"",memory:""},
-  {title:"Stick",genre:"Drama",status:"Watched",together:"All seasons",eps:8,avg_mins:45,rating:3,note:"S2 renewed",memory:""},
-  {title:"Stranger Things",genre:"Horror / dark",status:"Watched",together:"S4–5",eps:17,avg_mins:65,rating:4,note:"S1–3 before together; concluded",memory:""},
-  {title:"The Studio",genre:"Comedy",status:"Watched",together:"All seasons",eps:10,avg_mins:35,rating:4,note:"S2 renewed",memory:""},
-  {title:"Succession",genre:"Drama",status:"Watched",together:"S4",eps:10,avg_mins:60,rating:5,note:"S1–3 before together; concluded",memory:""},
-  {title:"Ted Lasso",genre:"Comedy",status:"Watched",together:"All seasons",eps:34,avg_mins:42,rating:5,note:"S4 Aug 5 2026",memory:""},
-  {title:"3 Body Problem",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:8,avg_mins:60,rating:4,note:"S2 filming",memory:""},
-  {title:"Tokyo Vice",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:18,avg_mins:55,rating:4,note:"",memory:""},
-  {title:"True Detective",genre:"Crime / thriller",status:"Watched",together:"S4",eps:6,avg_mins:60,rating:4,note:"S1–3 before together; S5 confirmed",memory:""},
-  {title:"Vice Principals",genre:"Comedy",status:"Watched",together:"All seasons",eps:18,avg_mins:30,rating:4,note:"Concluded",memory:""},
-  {title:"Wednesday",genre:"Horror / dark",status:"Watched",together:"All seasons",eps:16,avg_mins:45,rating:3,note:"S3 possible",memory:""},
-  {title:"White Lotus",genre:"Drama",status:"Watched",together:"S2–3",eps:14,avg_mins:55,rating:5,note:"S1 before together; S4 confirmed",memory:""},
-  {title:"Widows Bay",genre:"Crime / thriller",status:"Currently watching",together:"S1",eps:6,avg_mins:45,rating:0,note:"",memory:""},
-  {title:"X-Men '97",genre:"Animation",status:"Watched",together:"All seasons",eps:20,avg_mins:30,rating:4,note:"S3 in development",memory:""},
-  {title:"Yellowstone",genre:"Western",status:"Watched",together:"All seasons",eps:55,avg_mins:55,rating:4,note:"Concluded",memory:""},
-  {title:"Your Friends & Neighbors",genre:"Drama",status:"Currently watching",together:"S1",eps:8,avg_mins:40,rating:0,note:"S2–3 renewed",memory:""},
-  {title:"The Paper",genre:"Comedy",status:"Watched",together:"All seasons",eps:8,avg_mins:30,rating:4,note:"",memory:""},
+  {title:"1883",genre:"Western",status:"Watched",together:"All seasons",eps:10,avg_mins:55,rating:4,note:"Yellowstone prequel",memory:"",network:"Paramount+",seasons_watched:1,seasons_total:1},
+  {title:"1923",genre:"Western",status:"Watched",together:"All seasons",eps:16,avg_mins:55,rating:4,note:"Yellowstone prequel",memory:"",network:"Paramount+",seasons_watched:2,seasons_total:2},
+  {title:"Adventure Time",genre:"Animation",status:"Watched",together:"S3–10",eps:208,avg_mins:12,rating:5,note:"S1–2 before together",memory:"",network:"HBO Max",seasons_watched:8,seasons_total:10},
+  {title:"Arcane",genre:"Animation",status:"Watched",together:"All seasons",eps:18,avg_mins:40,rating:5,note:"Concluded after S2",memory:"",network:"Netflix",seasons_watched:2,seasons_total:2},
+  {title:"Beef",genre:"Drama",status:"Currently watching",together:"All seasons",eps:10,avg_mins:30,rating:0,note:"",memory:"",network:"Netflix",seasons_watched:1,seasons_total:1},
+  {title:"Big Little Lies",genre:"Drama",status:"Watched",together:"All seasons",eps:14,avg_mins:60,rating:4,note:"",memory:"",network:"HBO Max",seasons_watched:2,seasons_total:2},
+  {title:"Brothers Sun",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:50,rating:3,note:"Cancelled after S1",memory:"",network:"Netflix",seasons_watched:1,seasons_total:1},
+  {title:"Chief of War",genre:"Drama",status:"Watched",together:"All seasons",eps:8,avg_mins:55,rating:3,note:"S2 renewed",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Clarkson's Farm",genre:"Reality / docuseries",status:"Watched",together:"All seasons",eps:24,avg_mins:50,rating:4,note:"S5 in production",memory:"",network:"Prime",seasons_watched:4,seasons_total:4},
+  {title:"Common Side Effects",genre:"Comedy",status:"Currently watching",together:"S1",eps:7,avg_mins:30,rating:0,note:"",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Court of Gold",genre:"Drama",status:"Watched",together:"All seasons",eps:6,avg_mins:50,rating:3,note:"",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"The Boys",genre:"Sci-fi / fantasy",status:"Watched",together:"S4–5",eps:16,avg_mins:55,rating:4,note:"S1–3 before together; concluded",memory:"",network:"Prime",seasons_watched:2,seasons_total:5},
+  {title:"The Chair",genre:"Comedy",status:"Watched",together:"All seasons",eps:6,avg_mins:30,rating:3,note:"Cancelled after S1",memory:"",network:"Netflix",seasons_watched:1,seasons_total:1},
+  {title:"The Curse",genre:"Horror / dark",status:"Watched",together:"All seasons",eps:10,avg_mins:55,rating:4,note:"Limited series",memory:"",network:"Paramount+",seasons_watched:1,seasons_total:1},
+  {title:"Dark Matter",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:9,avg_mins:50,rating:4,note:"S2 renewed",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Dark Winds",genre:"Crime / thriller",status:"On Hold",together:"—",eps:0,avg_mins:50,rating:0,note:"Haven't finished S1",memory:"",network:"Netflix",seasons_watched:0,seasons_total:3},
+  {title:"Disenchanted",genre:"Animation",status:"Watched",together:"All seasons",eps:20,avg_mins:22,rating:3,note:"",memory:"",network:"Netflix",seasons_watched:1,seasons_total:1},
+  {title:"Drops of God",genre:"Drama",status:"Watched",together:"All seasons",eps:8,avg_mins:45,rating:4,note:"S2–3 renewed",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Duster",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:10,avg_mins:45,rating:3,note:"",memory:"",network:"HBO Max",seasons_watched:1,seasons_total:1},
+  {title:"Dutton Ranch",genre:"Western",status:"Currently watching",together:"S1",eps:6,avg_mins:50,rating:0,note:"Ongoing",memory:"",network:"Paramount+",seasons_watched:1,seasons_total:1},
+  {title:"East Bound & Down",genre:"Comedy",status:"Watched",together:"All seasons",eps:29,avg_mins:30,rating:4,note:"Concluded",memory:"",network:"HBO Max",seasons_watched:4,seasons_total:4},
+  {title:"Fallout",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:16,avg_mins:55,rating:5,note:"S3 in development",memory:"",network:"Prime",seasons_watched:2,seasons_total:2},
+  {title:"Gen V",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:15,avg_mins:55,rating:3,note:"Cancelled after S2",memory:"",network:"Prime",seasons_watched:2,seasons_total:2},
+  {title:"Gravity Falls",genre:"Animation",status:"Watched",together:"All seasons",eps:40,avg_mins:22,rating:4,note:"Concluded",memory:"",network:"Disney+",seasons_watched:2,seasons_total:2},
+  {title:"Hacks",genre:"Comedy",status:"Currently watching",together:"S1–4",eps:30,avg_mins:35,rating:5,note:"S5 incoming — final season",memory:"",network:"HBO Max",seasons_watched:4,seasons_total:4},
+  {title:"Hijack",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:7,avg_mins:45,rating:4,note:"S2–3 renewed",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"House of the Dragon",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:18,avg_mins:60,rating:3,note:"S3 June 2026",memory:"",network:"HBO Max",seasons_watched:2,seasons_total:2},
+  {title:"House of Guinness",genre:"Drama",status:"Watched",together:"All seasons",eps:6,avg_mins:55,rating:3,note:"",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Invincible",genre:"Animation",status:"Watched",together:"S1–4",eps:32,avg_mins:45,rating:5,note:"S5 announced 2027",memory:"",network:"Prime",seasons_watched:4,seasons_total:4},
+  {title:"It's Always Sunny (S18)",genre:"Comedy",status:"Watched",together:"S18",eps:8,avg_mins:22,rating:4,note:"S1–17 before together",memory:"",network:"Disney+",seasons_watched:1,seasons_total:16},
+  {title:"Jury Duty",genre:"Reality / docuseries",status:"Watched",together:"All seasons",eps:8,avg_mins:35,rating:5,note:"",memory:"",network:"Prime",seasons_watched:1,seasons_total:1},
+  {title:"Jury Duty: Company Retreat",genre:"Reality / docuseries",status:"Currently watching",together:"S1",eps:6,avg_mins:35,rating:0,note:"",memory:"",network:"Prime",seasons_watched:1,seasons_total:1},
+  {title:"Landman S1",genre:"Drama",status:"Watched",together:"All seasons",eps:10,avg_mins:55,rating:3,note:"",memory:"",network:"Paramount+",seasons_watched:1,seasons_total:1},
+  {title:"Landman S2",genre:"Drama",status:"Currently watching",together:"S2",eps:5,avg_mins:55,rating:0,note:"Mid-season",memory:"",network:"Paramount+",seasons_watched:1,seasons_total:2},
+  {title:"The Last of Us",genre:"Horror / dark",status:"Watched",together:"All seasons",eps:16,avg_mins:55,rating:5,note:"S3 confirmed",memory:"",network:"HBO Max",seasons_watched:2,seasons_total:2},
+  {title:"Legends",genre:"Comedy",status:"Currently watching",together:"S1",eps:6,avg_mins:30,rating:0,note:"",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Legends of Vox Machina",genre:"Animation",status:"Watched",together:"All seasons",eps:27,avg_mins:24,rating:4,note:"",memory:"",network:"Prime",seasons_watched:3,seasons_total:3},
+  {title:"Mobland",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:55,rating:3,note:"",memory:"",network:"Paramount+",seasons_watched:1,seasons_total:1},
+  {title:"The Mighty Nein",genre:"Animation",status:"Watched",together:"All seasons",eps:3,avg_mins:24,rating:4,note:"Critical Role animated",memory:"",network:"Prime",seasons_watched:1,seasons_total:1},
+  {title:"Mare of Easttown",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:7,avg_mins:60,rating:5,note:"Limited series",memory:"",network:"HBO Max",seasons_watched:1,seasons_total:1},
+  {title:"Murderbot",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:10,avg_mins:40,rating:4,note:"S2 renewed",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Murder at the End of the World",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:7,avg_mins:55,rating:4,note:"Limited series",memory:"",network:"Disney+",seasons_watched:1,seasons_total:1},
+  {title:"Mythic Quest",genre:"Comedy",status:"Watched",together:"All seasons",eps:36,avg_mins:28,rating:4,note:"",memory:"",network:"Apple TV+",seasons_watched:4,seasons_total:4},
+  {title:"Only Murders in the Building",genre:"Crime / thriller",status:"Watched",together:"S1–3",eps:30,avg_mins:35,rating:4,note:"S4–5 aired; S6 renewed",memory:"",network:"Disney+",seasons_watched:3,seasons_total:5},
+  {title:"Outer Range",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:16,avg_mins:50,rating:3,note:"",memory:"",network:"Prime",seasons_watched:2,seasons_total:2},
+  {title:"Party Down",genre:"Comedy",status:"Watched",together:"All seasons",eps:30,avg_mins:28,rating:4,note:"",memory:"",network:"Starz",seasons_watched:3,seasons_total:3},
+  {title:"Peacemaker",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:14,avg_mins:45,rating:4,note:"Concluded S2",memory:"",network:"HBO Max",seasons_watched:2,seasons_total:2},
+  {title:"The Penguin",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:55,rating:4,note:"",memory:"",network:"HBO Max",seasons_watched:1,seasons_total:1},
+  {title:"Percy Jackson",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:16,avg_mins:40,rating:3,note:"S3 in development",memory:"",network:"Disney+",seasons_watched:2,seasons_total:2},
+  {title:"The Pitt",genre:"Drama",status:"Watched",together:"All seasons",eps:15,avg_mins:60,rating:4,note:"S2–3 renewed",memory:"",network:"HBO Max",seasons_watched:1,seasons_total:1},
+  {title:"Pluribus",genre:"Sci-fi / fantasy",status:"Currently watching",together:"S1",eps:6,avg_mins:40,rating:0,note:"",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Poker Face",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:10,avg_mins:50,rating:4,note:"S2 confirmed",memory:"",network:"Peacock",seasons_watched:1,seasons_total:1},
+  {title:"Red Oaks",genre:"Comedy",status:"Watched",together:"All seasons",eps:30,avg_mins:28,rating:4,note:"Concluded",memory:"",network:"Prime",seasons_watched:3,seasons_total:3},
+  {title:"The Rehearsal",genre:"Reality / docuseries",status:"Watched",together:"All seasons",eps:12,avg_mins:60,rating:5,note:"",memory:"",network:"HBO Max",seasons_watched:1,seasons_total:1},
+  {title:"The Residence",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:45,rating:3,note:"",memory:"",network:"Netflix",seasons_watched:1,seasons_total:1},
+  {title:"Rick and Morty",genre:"Animation",status:"Watched",together:"S7–8",eps:20,avg_mins:22,rating:4,note:"S1–6 before together",memory:"",network:"Adult Swim",seasons_watched:2,seasons_total:8},
+  {title:"Righteous Gemstones",genre:"Comedy",status:"Watched",together:"All seasons",eps:34,avg_mins:55,rating:4,note:"",memory:"",network:"HBO Max",seasons_watched:4,seasons_total:4},
+  {title:"Rings of Power",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:16,avg_mins:60,rating:3,note:"S3 filming",memory:"",network:"Prime",seasons_watched:2,seasons_total:2},
+  {title:"The Resort",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:8,avg_mins:40,rating:4,note:"Limited series",memory:"",network:"Peacock",seasons_watched:1,seasons_total:1},
+  {title:"Severance",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:19,avg_mins:50,rating:5,note:"S3 renewed",memory:"",network:"Apple TV+",seasons_watched:2,seasons_total:2},
+  {title:"Seven Dials Mystery",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:3,avg_mins:55,rating:3,note:"Agatha Christie",memory:"",network:"Netflix",seasons_watched:1,seasons_total:1},
+  {title:"Sharp Objects",genre:"Horror / dark",status:"Watched",together:"All seasons",eps:8,avg_mins:55,rating:4,note:"Limited series",memory:"",network:"HBO Max",seasons_watched:1,seasons_total:1},
+  {title:"Shogun",genre:"Drama",status:"Watched",together:"All seasons",eps:10,avg_mins:60,rating:5,note:"S2 filming",memory:"",network:"Disney+",seasons_watched:1,seasons_total:1},
+  {title:"Shrinking",genre:"Comedy",status:"Watched",together:"All seasons",eps:30,avg_mins:30,rating:4,note:"S4 renewed",memory:"",network:"Apple TV+",seasons_watched:3,seasons_total:3},
+  {title:"Side Quest",genre:"Comedy",status:"Currently watching",together:"S1",eps:6,avg_mins:30,rating:0,note:"",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Silo",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:20,avg_mins:50,rating:4,note:"S3 July 3 2026",memory:"",network:"Apple TV+",seasons_watched:2,seasons_total:2},
+  {title:"Slow Horses",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:30,avg_mins:45,rating:5,note:"S6–7 confirmed",memory:"",network:"Apple TV+",seasons_watched:5,seasons_total:5},
+  {title:"Steal",genre:"Crime / thriller",status:"Currently watching",together:"S1",eps:6,avg_mins:45,rating:0,note:"",memory:"",network:"Netflix",seasons_watched:1,seasons_total:1},
+  {title:"Stick",genre:"Drama",status:"Watched",together:"All seasons",eps:8,avg_mins:45,rating:3,note:"S2 renewed",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Stranger Things",genre:"Horror / dark",status:"Watched",together:"S4–5",eps:17,avg_mins:65,rating:4,note:"S1–3 before together; concluded",memory:"",network:"Netflix",seasons_watched:2,seasons_total:5},
+  {title:"The Studio",genre:"Comedy",status:"Watched",together:"All seasons",eps:10,avg_mins:35,rating:4,note:"S2 renewed",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"Succession",genre:"Drama",status:"Watched",together:"S4",eps:10,avg_mins:60,rating:5,note:"S1–3 before together; concluded",memory:"",network:"HBO Max",seasons_watched:1,seasons_total:4},
+  {title:"Ted Lasso",genre:"Comedy",status:"Watched",together:"All seasons",eps:34,avg_mins:42,rating:5,note:"S4 Aug 5 2026",memory:"",network:"Apple TV+",seasons_watched:3,seasons_total:3},
+  {title:"3 Body Problem",genre:"Sci-fi / fantasy",status:"Watched",together:"All seasons",eps:8,avg_mins:60,rating:4,note:"S2 filming",memory:"",network:"Netflix",seasons_watched:1,seasons_total:1},
+  {title:"Tokyo Vice",genre:"Crime / thriller",status:"Watched",together:"All seasons",eps:18,avg_mins:55,rating:4,note:"",memory:"",network:"HBO Max",seasons_watched:2,seasons_total:2},
+  {title:"True Detective",genre:"Crime / thriller",status:"Watched",together:"S4",eps:6,avg_mins:60,rating:4,note:"S1–3 before together; S5 confirmed",memory:"",network:"HBO Max",seasons_watched:1,seasons_total:4},
+  {title:"Vice Principals",genre:"Comedy",status:"Watched",together:"All seasons",eps:18,avg_mins:30,rating:4,note:"Concluded",memory:"",network:"HBO Max",seasons_watched:2,seasons_total:2},
+  {title:"Wednesday",genre:"Horror / dark",status:"Watched",together:"All seasons",eps:16,avg_mins:45,rating:3,note:"S3 possible",memory:"",network:"Netflix",seasons_watched:2,seasons_total:2},
+  {title:"White Lotus",genre:"Drama",status:"Watched",together:"S2–3",eps:14,avg_mins:55,rating:5,note:"S1 before together; S4 confirmed",memory:"",network:"HBO Max",seasons_watched:2,seasons_total:3},
+  {title:"Widows Bay",genre:"Crime / thriller",status:"Currently watching",together:"S1",eps:6,avg_mins:45,rating:0,note:"",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"X-Men '97",genre:"Animation",status:"Watched",together:"All seasons",eps:20,avg_mins:30,rating:4,note:"S3 in development",memory:"",network:"Disney+",seasons_watched:2,seasons_total:2},
+  {title:"Yellowstone",genre:"Western",status:"Watched",together:"All seasons",eps:55,avg_mins:55,rating:4,note:"Concluded",memory:"",network:"Paramount+",seasons_watched:5,seasons_total:5},
+  {title:"Your Friends & Neighbors",genre:"Drama",status:"Currently watching",together:"S1",eps:8,avg_mins:40,rating:0,note:"S2–3 renewed",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
+  {title:"The Paper",genre:"Comedy",status:"Watched",together:"All seasons",eps:8,avg_mins:30,rating:4,note:"",memory:"",network:"Apple TV+",seasons_watched:1,seasons_total:1},
 ];
 
 let data=[];
@@ -561,31 +637,51 @@ async function loadShows(){
   const {data:rows,error}=await sb.from('shows').select('*').order('title');
   if(error){showToast('Could not load shows',true);return;}
   if(rows.length===0){
-    showToast('Setting up your database… this takes a moment ✨');
+    showToast('Setting up your database… ✨');
     await sb.from('shows').insert(SEED);
     const {data:seeded}=await sb.from('shows').select('*').order('title');
     data=seeded||[];
   } else {data=rows;}
   document.getElementById('loadingOverlay').classList.add('hidden');
+  populateNetworkFilter();
   renderAll();
   sb.channel('shows').on('postgres_changes',{event:'*',schema:'public',table:'shows'},()=>refreshData()).subscribe();
 }
 
 async function refreshData(){
   const {data:rows}=await sb.from('shows').select('*').order('title');
-  if(rows){data=rows;renderAll();}
+  if(rows){data=rows;populateNetworkFilter();renderAll();}
+}
+
+function populateNetworkFilter(){
+  const networks=[...new Set(data.map(s=>s.network).filter(Boolean))].sort();
+  const sel=document.getElementById('platformFilter');
+  const current=sel.value;
+  sel.innerHTML='<option value="">All platforms</option>'+networks.map(n=>`<option${n===current?' selected':''}>${n}</option>`).join('');
 }
 
 async function addShow(){
   const title=document.getElementById('addTitle').value.trim();
   if(!title){showToast('Please enter a title',true);return;}
-  const row={title,genre:document.getElementById('addGenre').value,status:document.getElementById('addStatus').value,together:document.getElementById('addTogether').value.trim(),eps:parseInt(document.getElementById('addEps').value)||0,avg_mins:parseInt(document.getElementById('addAvg').value)||0,note:document.getElementById('addNote').value.trim(),memory:document.getElementById('addMemory').value.trim(),rating:addRating};
+  const row={
+    title,genre:document.getElementById('addGenre').value,
+    status:document.getElementById('addStatus').value,
+    network:document.getElementById('addNetwork').value.trim(),
+    together:document.getElementById('addTogether').value.trim(),
+    seasons_watched:parseInt(document.getElementById('addSeasonsWatched').value)||0,
+    seasons_total:parseInt(document.getElementById('addSeasonsTotal').value)||0,
+    eps:parseInt(document.getElementById('addEps').value)||0,
+    avg_mins:parseInt(document.getElementById('addAvg').value)||0,
+    note:document.getElementById('addNote').value.trim(),
+    memory:document.getElementById('addMemory').value.trim(),
+    rating:addRating
+  };
   const {error}=await sb.from('shows').insert([row]);
   if(error){showToast('Could not save: '+error.message,true);return;}
   showToast(`"${title}" added ✓`);
-  ['addTitle','addTogether','addNote','addMemory'].forEach(id=>document.getElementById(id).value='');
+  ['addTitle','addTogether','addNote','addMemory','addNetwork'].forEach(id=>document.getElementById(id).value='');
   ['addGenre','addStatus'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('addEps').value='';document.getElementById('addAvg').value='';
+  ['addEps','addAvg','addSeasonsWatched','addSeasonsTotal'].forEach(id=>document.getElementById(id).value='');
   setStars('add',0);toggleForm();await refreshData();
 }
 
@@ -599,7 +695,20 @@ async function saveMemoryDebounced(id,val){
 
 async function saveEdit(){
   if(!editingId) return;
-  const row={title:document.getElementById('editTitle').value.trim(),genre:document.getElementById('editGenre').value,status:document.getElementById('editStatus').value,together:document.getElementById('editTogether').value.trim(),eps:parseInt(document.getElementById('editEps').value)||0,avg_mins:parseInt(document.getElementById('editAvgMins').value)||0,note:document.getElementById('editNote').value.trim(),memory:document.getElementById('editMemory').value.trim(),rating:editRating};
+  const row={
+    title:document.getElementById('editTitle').value.trim(),
+    genre:document.getElementById('editGenre').value,
+    status:document.getElementById('editStatus').value,
+    network:document.getElementById('editNetwork').value.trim(),
+    together:'',
+    seasons_watched:parseInt(document.getElementById('editSeasonsWatched').value)||0,
+    seasons_total:parseInt(document.getElementById('editSeasonsTotal').value)||0,
+    eps:parseInt(document.getElementById('editEps').value)||0,
+    avg_mins:parseInt(document.getElementById('editAvgMins').value)||0,
+    note:document.getElementById('editNote').value.trim(),
+    memory:document.getElementById('editMemory').value.trim(),
+    rating:editRating
+  };
   const {error}=await sb.from('shows').update(row).eq('id',editingId);
   if(error){showToast('Could not save: '+error.message,true);return;}
   showToast('Changes saved ✓');closeModal();await refreshData();
@@ -636,8 +745,10 @@ function openEdit(id){
   document.getElementById('editFormGrid').innerHTML=`
     <div class="form-group" style="grid-column:span 2"><label class="form-label">Title</label><input class="form-input" id="editTitle" value="${s.title.replace(/"/g,'&quot;')}"></div>
     <div class="form-group"><label class="form-label">Genre</label><select class="form-select" id="editGenre">${['Animation','Comedy','Crime / thriller','Drama','Horror / dark','Reality / docuseries','Sci-fi / fantasy','Western'].map(g=>`<option ${s.genre===g?'selected':''}>${g}</option>`).join('')}</select></div>
-    <div class="form-group"><label class="form-label">Status</label><select class="form-select" id="editStatus">${['Currently watching','On Hold','Watched'].map(v=>`<option ${s.status===v?'selected':''}>${v}</option>`).join('')}</select></div>
-    <div class="form-group"><label class="form-label">Seasons together</label><input class="form-input" id="editTogether" value="${(s.together||'').replace(/"/g,'&quot;')}"></div>
+    <div class="form-group"><label class="form-label">Status</label><select class="form-select" id="editStatus">${['Watched','Currently watching','On Hold'].map(v=>`<option ${s.status===v?'selected':''}>${v}</option>`).join('')}</select></div>
+    <div class="form-group"><label class="form-label">Network</label><input class="form-input" id="editNetwork" value="${(s.network||'').replace(/"/g,'&quot;')}"></div>
+    <div class="form-group"><label class="form-label">Seasons watched</label><input class="form-input" id="editSeasonsWatched" type="number" value="${s.seasons_watched||0}"></div>
+    <div class="form-group"><label class="form-label">Total seasons</label><input class="form-input" id="editSeasonsTotal" type="number" value="${s.seasons_total||0}"></div>
     <div class="form-group"><label class="form-label">Episodes watched</label><input class="form-input" id="editEps" type="number" value="${s.eps||0}"></div>
     <div class="form-group"><label class="form-label">Avg episode mins</label><input class="form-input" id="editAvgMins" type="number" value="${s.avg_mins||0}"></div>
     <div class="form-group" style="grid-column:span 2"><label class="form-label">Note</label><input class="form-input" id="editNote" value="${(s.note||'').replace(/"/g,'&quot;')}"></div>`;
@@ -697,21 +808,28 @@ function renderHero(){
   const rated=data.filter(s=>s.rating>0);
   const avg=rated.length?(Math.round(rated.reduce((a,s)=>a+s.rating,0)/rated.length*10)/10):0;
   const watching=data.filter(s=>s.status==='Currently watching').length;
+  const totalSeasons=data.reduce((a,s)=>a+(s.seasons_watched||0),0);
+  const totalEps=data.reduce((a,s)=>a+(s.eps||0),0);
   document.getElementById('heroStats').innerHTML=`
     <div class="hstat"><div class="hstat-val">${data.length}</div><div class="hstat-lbl">Shows together</div></div>
     <div class="hstat"><div class="hstat-val">~${totalHrs}h</div><div class="hstat-lbl">Hours watched</div><div class="hstat-sub">≈ ${days} full days</div></div>
     <div class="hstat"><div class="hstat-val">${avg}★</div><div class="hstat-lbl">Avg rating</div></div>
-    <div class="hstat"><div class="hstat-val">${watching}</div><div class="hstat-lbl">Watching now</div></div>`;
+    <div class="hstat"><div class="hstat-val">${watching}</div><div class="hstat-lbl">Watching now</div></div>
+    <div class="hstat"><div class="hstat-val">${totalSeasons}</div><div class="hstat-lbl">Seasons watched</div></div>
+    <div class="hstat"><div class="hstat-val">${totalEps.toLocaleString()}</div><div class="hstat-lbl">Episodes watched</div></div>`;
 }
 
 function renderWatching(){
   const watching=data.filter(s=>s.status==='Currently watching').sort((a,b)=>a.title.localeCompare(b.title));
   document.getElementById('watchingPill').textContent=watching.length+' show'+(watching.length!==1?'s':'');
   document.getElementById('watchingGrid').innerHTML=watching.length?watching.map(s=>`
-    <div class="watching-card">
+    <div class="watching-card" onclick="openEdit('${s.id}')" title="Edit show">
       <div class="watching-show-title"><span class="watching-dot"></span>${s.title}</div>
       <div class="watching-meta">${s.together||''}${s.note?' · '+s.note:''}</div>
-      <div>${genreTag(s.genre||'')}</div>
+      <div class="watching-tags">
+        ${genreTag(s.genre||'')}
+        ${s.network?watchingPlatformTag(s.network):''}
+      </div>
     </div>`).join(''):`<p style="color:var(--muted);font-size:13px">Nothing currently watching — add a show above.</p>`;
   const body=document.getElementById('watching-body');
   if(collapseState.watching) body.style.maxHeight=body.scrollHeight+'px';
@@ -733,9 +851,14 @@ function renderHOF(){
 }
 
 function renderCharts(){
-  const gc={};const gh={};
-  data.forEach(s=>{gc[s.genre]=(gc[s.genre]||0)+1;gh[s.genre]=(gh[s.genre]||0)+hrs(s)});
-  const mc=Math.max(...Object.values(gc),1);const mh=Math.max(...Object.values(gh),1);
+  const gc={};const gh={};const gn={};
+  data.forEach(s=>{
+    gc[s.genre]=(gc[s.genre]||0)+1;
+    gh[s.genre]=(gh[s.genre]||0)+hrs(s);
+    if(s.network) gn[s.network]=(gn[s.network]||0)+1;
+  });
+  const mc=Math.max(...Object.values(gc),1);
+  const mh=Math.max(...Object.values(gh),1);
   document.getElementById('genreBars').innerHTML=Object.entries(gc).sort((a,b)=>b[1]-a[1]).map(([g,c])=>`
     <div class="genre-row-chart"><span class="genre-label" style="color:${GENRE_COLORS[g]||'var(--muted)'}">${g}</span>
     <div class="genre-bar-wrap"><div class="genre-bar" style="width:${Math.round(c/mc*100)}%;background:${GENRE_COLORS[g]||'var(--terra)'}"></div></div>
@@ -744,33 +867,86 @@ function renderCharts(){
     <div class="genre-row-chart"><span class="genre-label" style="color:${GENRE_COLORS[g]||'var(--muted)'}">${g}</span>
     <div class="genre-bar-wrap"><div class="genre-bar" style="width:${Math.round(h/mh*100)}%;background:${GENRE_COLORS[g]||'var(--terra)'}"></div></div>
     <span class="genre-count">${Math.round(h)}h</span></div>`).join('');
+  // donut
+  renderDonut(gn);
+}
+
+function renderDonut(gn){
+  const sorted=Object.entries(gn).sort((a,b)=>b[1]-a[1]);
+  const top8=sorted.slice(0,8);
+  const otherCount=sorted.slice(8).reduce((a,[,v])=>a+v,0);
+  if(otherCount>0) top8.push(['Other',otherCount]);
+  const total=top8.reduce((a,[,v])=>a+v,0);
+  const canvas=document.getElementById('donutCanvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const cx=80,cy=80,r=68,inner=44;
+  ctx.clearRect(0,0,160,160);
+  let angle=-Math.PI/2;
+  top8.forEach(([,v],i)=>{
+    const slice=(v/total)*Math.PI*2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,angle,angle+slice);
+    ctx.closePath();
+    ctx.fillStyle=NETWORK_COLORS[i%NETWORK_COLORS.length];
+    ctx.fill();
+    angle+=slice;
+  });
+  // inner hole
+  ctx.beginPath();
+  ctx.arc(cx,cy,inner,0,Math.PI*2);
+  ctx.fillStyle='#211d1a';
+  ctx.fill();
+  // centre text
+  ctx.fillStyle='#e0a98e';
+  ctx.font='bold 18px Inter,sans-serif';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(total,cx,cy-6);
+  ctx.fillStyle='#8a7b74';
+  ctx.font='10px Inter,sans-serif';
+  ctx.fillText('shows',cx,cy+9);
+  // legend
+  document.getElementById('donutLegend').innerHTML=top8.map(([n,v],i)=>`
+    <div class="legend-row">
+      <div class="legend-dot" style="background:${NETWORK_COLORS[i%NETWORK_COLORS.length]}"></div>
+      <span class="legend-label">${n}</span>
+      <span class="legend-val">${v}</span>
+    </div>`).join('');
 }
 
 function renderList(){
   const q=document.getElementById('search').value.toLowerCase();
   const sf=document.getElementById('statusFilter').value;
   const gf=document.getElementById('genreFilter').value;
+  const nf=document.getElementById('platformFilter').value;
   const sv=document.getElementById('sortSel').value;
   let filtered=data.filter(s=>{
     if(q&&!s.title.toLowerCase().includes(q))return false;
     if(sf&&s.status!==sf)return false;
     if(gf&&s.genre!==gf)return false;
+    if(nf&&s.network!==nf)return false;
     return true;
   });
   if(sv==='title') filtered.sort((a,b)=>a.title.localeCompare(b.title));
   else if(sv==='hrs') filtered.sort((a,b)=>hrs(b)-hrs(a));
   else if(sv==='rating') filtered.sort((a,b)=>(b.rating||0)-(a.rating||0)||a.title.localeCompare(b.title));
   document.getElementById('showCount').textContent=filtered.length+' shows';
-  document.getElementById('showGrid').innerHTML=filtered.length?filtered.map(s=>`
-    <div class="show-row">
+  document.getElementById('showGrid').innerHTML=filtered.length?filtered.map(s=>{
+    const sw=s.seasons_watched||0;const st=s.seasons_total||0;
+    const seasonStr=st>0?(sw===st?`${sw} / ${st} S`:`${sw} / ${st} S`):'—';
+    return `<div class="show-row">
       <div><div class="show-title">${s.title}</div>
       <div class="show-note-small">${s.together||''}${s.note?' · '+s.note:''}</div></div>
       <div>${statusBadge(s.status)}</div>
       <div>${genreTag(s.genre||'')}</div>
-      <div class="show-hrs">${hrs(s)===0?'—':'~'+hrs(s)+'h'}<br><span style="font-size:11px;color:var(--terra2)">${stars(s.rating||0)}</span></div>
-      <div><input class="show-memory-input" placeholder="+ memory…" value="${(s.memory||'').replace(/"/g,'&quot;')}" oninput="saveMemoryDebounced('${s.id}',this.value)"></div>
+      <div>${platformTag(s.network)}</div>
+      <div class="show-seasons">${seasonStr}</div>
+      <div class="memory-wrap"><span class="memory-pencil">✎</span><input class="show-memory-input" placeholder="memory…" value="${(s.memory||'').replace(/"/g,'&quot;')}" oninput="saveMemoryDebounced('${s.id}',this.value)"></div>
       <div class="show-actions"><button class="icon-btn edit" onclick="openEdit('${s.id}')" title="Edit">✎</button></div>
-    </div>`).join(''):`<div class="empty-state">No shows match your filters.</div>`;
+    </div>`;
+  }).join(''):`<div class="empty-state">No shows match your filters.</div>`;
   document.getElementById('countNote').textContent=`Showing ${filtered.length} of ${data.length} shows`;
 }
 
